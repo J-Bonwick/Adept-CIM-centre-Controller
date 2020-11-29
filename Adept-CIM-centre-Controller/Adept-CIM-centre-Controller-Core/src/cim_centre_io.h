@@ -78,24 +78,24 @@
 // #define Z_DAC_MSB_ADDRESS 0x1A
 
 typedef enum {
-	forwardBackward = 0x30,
-	leftRight = 0x2C,
-	upDown = 0x34,
-	spindle = 0x28
+	encoderFB = 0x30,
+	encoderLR = 0x2C,
+	encoderUD = 0x34,
+	encoderSpindle = 0x28
 }encoder_t;
 
 typedef enum {
-	forwardBackward = 0x48,
-	leftRight = 0x44,
-	upDown= 0x4C,
-	spindle = 0x40
+	encoderResetFB = 0x48,
+	encoderResetLR = 0x44,
+	encoderResetUD= 0x4C,
+	encoderResetSpindle = 0x40
 }encoderReset_t;
 
 typedef enum {
-	forwardBackward = 0x15,
-	leftRight = 0x17,
-	upDown = 0x16,
-	spindle = 0x14
+	dacFB = 0x15,
+	dacLR = 0x17,
+	dacUD = 0x16,
+	dacSpindle = 0x14
 }dac_t;
 
 struct fPanelStatus_t {
