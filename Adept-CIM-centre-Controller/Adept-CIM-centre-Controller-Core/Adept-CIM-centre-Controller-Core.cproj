@@ -973,6 +973,12 @@
     <None Include="src\config\conf_uart_serial.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\console.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\console.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\main.c">
       <SubType>compile</SubType>
     </Compile>

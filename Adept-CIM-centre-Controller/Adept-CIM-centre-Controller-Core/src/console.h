@@ -9,7 +9,7 @@
 #ifndef CONSOLE_H_
 #define CONSOLE_H_
 
-
+void configure_console(void);
 
 
 

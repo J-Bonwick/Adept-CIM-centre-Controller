@@ -30,11 +30,14 @@
 */
 #include <asf.h>
 #include "cim_centre_io.h"
+#include "console.h"
 
 int main (void)
 {
 	sysclk_init();
 	board_init();
+
+	configure_console();
 	
 	//Initialize io pins on the bus
 	io_init();
