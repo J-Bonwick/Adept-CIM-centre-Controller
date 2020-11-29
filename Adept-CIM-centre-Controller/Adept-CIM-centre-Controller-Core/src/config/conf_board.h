@@ -41,7 +41,7 @@
 #define CONF_BOARD_UART_CONSOLE
 
 /* Enable USB interface (USB) for host mode */
-#define CONF_BOARD_USB_PORT
+//#define CONF_BOARD_USB_PORT
 
 /* Configure ADC example pins */
 //#define CONF_BOARD_ADC
@@ -74,10 +74,10 @@
 //#define CONF_BOARD_TWI1
 
 /* Configure USART RXD pin */
-//#define CONF_BOARD_USART_RXD
+#define CONF_BOARD_USART_RXD
 
 /* Configure USART TXD pin */
-//#define CONF_BOARD_USART_TXD
+#define CONF_BOARD_USART_TXD
 
 /* Configure USART CTS pin */
 //#define CONF_BOARD_USART_CTS
