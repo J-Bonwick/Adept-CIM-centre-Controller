@@ -29,11 +29,15 @@
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 #include <asf.h>
+#include "cim_centre_io.h"
 
 int main (void)
 {
 	sysclk_init();
 	board_init();
+	
+	//Initialize io pins on the bus
+	io_init();
 
 	/* Insert application code here, after the board has been initialized. */
 }
