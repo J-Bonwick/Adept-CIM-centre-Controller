@@ -122,5 +122,5 @@ void setDac(dac_t dac, uint16_t speed){
 }
 
 void loadDacs(void){
-	writeRaw()
+	writeRaw(LOAD_DAC_ADDRESS);
 }
