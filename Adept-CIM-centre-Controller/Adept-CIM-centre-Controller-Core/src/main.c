@@ -43,7 +43,7 @@ int main (void)
 	io_init();
 
 	while(1){
-		usart_write_line(CONF_UART, "TEST\r\n");
+		//usart_write_line(CONF_UART, "TEST\r\n");
 		//usart_putchar(CONF_UART, 'b');
 		//uint32_t dw_status = usart_get_status(CONF_UART);
 		//if (dw_status & US_CSR_RXRDY) {
