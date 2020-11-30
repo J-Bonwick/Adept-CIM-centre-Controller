@@ -52,7 +52,7 @@
 
 #define CONF_UART_ID           ID_USART0
 /** Baudrate setting */
-#define CONF_UART_BAUDRATE     115200
+#define CONF_UART_BAUDRATE     460800
 /** Character length setting */
 #define CONF_UART_CHAR_LENGTH  US_MR_CHRL_8_BIT
 /** Parity setting */
