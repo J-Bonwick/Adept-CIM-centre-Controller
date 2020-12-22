@@ -91,27 +91,69 @@ typedef enum {
 	encoderResetSpindle = 0x40
 }encoderReset_t;
 
-typedef enum {
-	dacFB = 0x15,
-	dacLR = 0x17,
-	dacUD = 0x16,
-	dacSpindle = 0x14
-}dac_t;
+//typedef enum {
+	//dacFB = 0x15,
+	//dacLR = 0x17,
+	//dacUD = 0x16,
+	//dacSpindle = 0x14
+//}dac_t;
 
-struct fPanelStatus_t {
-	unsigned int zMinus:1;
-	unsigned int zPlus:1;
-	unsigned int xMinus: 1;
-	unsigned int xPlus: 1;
-	unsigned int home: 1;
-	unsigned int exit: 1;
-	unsigned int rapid: 1;
-	unsigned int sPlus: 1;
-	unsigned int feed: 1;
-	unsigned int stop: 1;
-	unsigned int sMinus: 1;
-	unsigned int slow: 1;
-};
+//struct fPanelStatus_t {
+	//unsigned int zMinus:1;
+	//unsigned int zPlus:1;
+	//unsigned int xMinus: 1;
+	//unsigned int xPlus: 1;
+	//unsigned int home: 1;
+	//unsigned int exit: 1;
+	//unsigned int rapid: 1;
+	//unsigned int sPlus: 1;
+	//unsigned int feed: 1;
+	//unsigned int stop: 1;
+	//unsigned int sMinus: 1;
+	//unsigned int slow: 1;
+//};
+
+//Front panel - Use this with the data returned from readFrontPanel();
+#define FP_Z_MINUS 0x1
+#define FP_Z_PLUS 0x2
+#define FP_X_MINUS 0x4
+#define FP_X_PLUS 0x8
+#define FP_HOME 0x10
+#define FP_EXIT 0x20
+#define FP_RAPID 0x40
+#define FP_S_PLUS 0x80
+#define FP_FEED 0x100
+#define FP_STOP 0x200
+#define FP_S_MINUS 0x400
+#define FP_SLOW 0x800
+
+//End Stops
+#define W_ENDSTOP 0x1
+#define FB_ENDSTOP 0x2
+#define UD_ENDSTOP 0x4
+#define LR_ENDSTOP 0x8
+//E-Stop
+#define ESTOP_LOW 0x10
+#define ESTOP_HIGH 0x20
+//Index
+#define S_INDEX 0x40
+#define FB_INDEX 0x80
+#define UD_INDEX 0x100 //??? swap these?
+#define LR_INDEX 0x200 //???
+
+//ENJD_W = 1 ???
+//END_FB = 2
+//END_UD = 3 ???
+//END_LR = 4
+//Stop = 5-6 / 13/14
+//Spindel = 7th / 15th
+//FB index - 8th / 16 bit bit
+//LR index = 9th bit
+//UD index = 10th bit
+//W Index = 11 ???
+//V index = 12???
+
+
 
 
 /* Sets up the pins on the bus */
