@@ -11,6 +11,8 @@
 
 void configure_console(void);
 
+void sendStatus(char* message, long int);
+
 
 
 #endif /* CONSOLE_H_ */

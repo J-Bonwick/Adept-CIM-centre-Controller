@@ -25,3 +25,9 @@ void configure_console(void)
 	
 	//NVIC_EnableIRQ(USART0_IRQn);
 }
+
+void sendStatus(char* messageCode, long int value){
+	char consoleBuffer[100];
+	sprintf(consoleBuffer, "FB: %ld\r\n", value);
+	usart_write_line(CONF_UART, consoleBuffer);
+}
