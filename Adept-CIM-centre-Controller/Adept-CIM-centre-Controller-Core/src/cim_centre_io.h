@@ -79,8 +79,8 @@
 
 typedef enum {
 	encoderFB = 0x30,
-	encoderLR = 0x2C,
-	encoderUD = 0x34,
+	encoderLR = 0x34,
+	encoderUD = 0x2C,
 	encoderSpindle = 0x28
 }encoder_t;
 
