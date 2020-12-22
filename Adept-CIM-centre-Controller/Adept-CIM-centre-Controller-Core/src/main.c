@@ -37,11 +37,6 @@
 
 void updateEncoder(long int *pos, uint16_t encoderCounter);
 
-//Current and previous positions of all axis
-long int fb_pos = 0;
-long int lr_pos = 0;
-long int ud_pos = 0;
-
 int main (void)
 {
 	sysclk_init();
@@ -53,9 +48,9 @@ int main (void)
 	io_init();
 	
 	//Set axis positions to the current pos so that the rollover logic doesn't trigger a roll over
-	fb_pos = readEncoderCounter(encoderFB);
-	lr_pos = readEncoderCounter(encoderLR);
-	ud_pos = readEncoderCounter(encoderUD);
+	long int fb_pos = readEncoderCounter(encoderFB);
+	long int lr_pos = readEncoderCounter(encoderLR);
+	long int ud_pos = readEncoderCounter(encoderUD);
 
 	while(1){
 		//Read quadrature encoders
