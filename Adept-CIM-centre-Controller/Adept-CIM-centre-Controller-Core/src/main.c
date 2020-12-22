@@ -51,6 +51,12 @@ int main (void)
 	long int fb_pos = readEncoder(encoderFB);
 	long int lr_pos = readEncoder(encoderLR);
 	long int ud_pos = readEncoder(encoderUD);
+	//Set target positions to the current position
+	long int fb_target = fb_pos - 1000;
+	long int lr_target = lr_pos;
+	long int ud_target = ud_pos;
+	
+	bool homeFB = false;
 
 	while(1){
 		//Read quadrature encoders
@@ -58,14 +64,41 @@ int main (void)
 		updateEncoder(&lr_pos, readEncoder(encoderLR));
 		updateEncoder(&ud_pos, readEncoder(encoderUD));
 		
+		//Calculate PID if required
+		if(true){
+			long int lr_error = lr_pos - lr_target;
+			int lr_speed = lr_error * 1;
+			if(lr_speed > 2047){
+				lr_speed = 2047;
+			}
+			else if(lr_speed < -2047){
+				lr_speed = -2047;
+			}
+			
+			long int fb_error = fb_pos - fb_target;
+			int fb_speed = fb_error * 1;
+			if(fb_speed > 2047){
+				fb_speed = 2047;
+			}
+			else if(fb_speed < -2047){
+				fb_speed = -2047;
+			}
+			
+			setDacs(fb_speed + 2048, 2048,lr_speed + 2048, 2048);
+		}
+		//fb_target +=2;
+		//setDacs(2200, 2048, 2045, 2048);
 		
-		setDacs(2070, 2048, 2048, 2048);
 		
 		//Print some useful info to the console
 		char consoleBuffer[100];
 		sprintf(consoleBuffer, "FB: %ld\r\n", fb_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
+		sprintf(consoleBuffer, "FBT: %ld\r\n", fb_target);
+		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "LR: %ld\r\n", lr_pos);
+		usart_write_line(CONF_UART, consoleBuffer);
+		sprintf(consoleBuffer, "LRT: %ld\r\n", lr_target);
 		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "UD: %ld\r\n", ud_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
