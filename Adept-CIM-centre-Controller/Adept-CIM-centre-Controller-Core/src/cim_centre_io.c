@@ -54,7 +54,7 @@ void io_init(void) {
 	writeRaw(PIO2_ADDRESS, 0x00);
 	
 	//Set motor drives to 0
-	setDacs(2048, 2048, 2048, 2048);
+	setDacs(2042, 2048, 2045, 2048);
 }
 
 void writeRaw(uint8_t address, uint8_t data) {
