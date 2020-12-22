@@ -54,9 +54,12 @@ int main (void)
 
 	while(1){
 		//Read quadrature encoders
-		updateEncoder(&fb_pos, readEncoder(encoderFB));
-		updateEncoder(&lr_pos, readEncoder(encoderLR));
-		updateEncoder(&ud_pos, readEncoder(encoderUD));
+		updateEncoder(&fb_pos, readEncoderCounter(encoderFB));
+		updateEncoder(&lr_pos, readEncoderCounter(encoderLR));
+		updateEncoder(&ud_pos, readEncoderCounter(encoderUD));
+		
+		
+		setDacs(2038, 2048, 2048, 2048);
 		
 		//Hopefully this prints the correct values
 		char consoleBuffer[100];
@@ -66,10 +69,14 @@ int main (void)
 		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "UD: %ld\r\n", ud_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
-		for (int i = 0; i <= 90000; i++)
-		{
-			__asm__ __volatile__ ("nop");
-		}
+		uint8_t temp = readEncoderCounter(encoderSpindle);
+		sprintf(consoleBuffer, "S: %d\r\n", temp);
+		usart_write_line(CONF_UART, consoleBuffer);
+		//delay_ms(200);
+		//for (int i = 0; i <= 90000; i++)
+		//{
+			//__asm__ __volatile__ ("nop");
+		//}
 		//usart_putchar(CONF_UART, 'b');
 		//uint32_t dw_status = usart_get_status(CONF_UART);
 		//if (dw_status & US_CSR_RXRDY) {

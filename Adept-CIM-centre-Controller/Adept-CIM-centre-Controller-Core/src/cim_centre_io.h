@@ -36,8 +36,8 @@
 #define PBA5 IOPORT_CREATE_PIN(PIOC, 18)   // DUE_PIN = 45
 #define PBA6 IOPORT_CREATE_PIN(PIOC, 19)   // DUE_PIN = 44
 //More control lines
-#define PBRES IOPORT_CREATE_PIN(PIOC, 21)   // DUE_PIN = 9
-#define PBAEN IOPORT_CREATE_PIN(PIOC, 22)   // DUE_PIN = 8
+#define PBRES IOPORT_CREATE_PIN(PIOC, 21)   // DUE_PIN = 9  | RESET
+#define PBAEN IOPORT_CREATE_PIN(PIOC, 22)   // DUE_PIN = 8  | 
 #define PDDS IOPORT_CREATE_PIN(PIOC, 23)    // DUE_PIN = 7
 #define PMSEL IOPORT_CREATE_PIN(PIOC, 24)   // DUE_PIN = 6
 #define PFAULT1 IOPORT_CREATE_PIN(PIOC, 25) // DUE_PIN = 5
@@ -59,23 +59,23 @@
 //#define SPINDLE_ENCODER_MSB_ADDRESS 0x28
 //#define SPINDLE_ENCODER_LSB_ADDRESS 0x29
 //#define SPINDLE_ENCODER_RESET_ADDRESS 0x40
-// #define SPINDLE_DAC_LSB_ADDRESS 0x14
-// #define SPINDLE_DAC_MSB_ADDRESS 0x18
+ #define SPINDLE_DAC_LSB_ADDRESS 0x14
+ #define SPINDLE_DAC_MSB_ADDRESS 0x18
 //X-Axis
 //#define X_ENCODER_ADDRESS 0x30
 //#define X_ENCODER_RESET_ADDRESS 0x48
-//#define X_DAC_LSB_ADDRESS 0x15
-//#define X_DAC_MSB_ADDRESS 0x19
+#define X_DAC_LSB_ADDRESS 0x15
+#define X_DAC_MSB_ADDRESS 0x19
 //Y-Axis
 //#define Y_ENCODER_ADDRESS 0x2C
 //#define Y_ENCODER_RESET_ADDRESS 0x44
-//#define Y_DAC_LSB_ADDRESS 0x17
-//#define Y_DAC_MSB_ADDRESS 0x1B
+#define Y_DAC_LSB_ADDRESS 0x17
+#define Y_DAC_MSB_ADDRESS 0x1B
 //Z-Axis
 //#define Z_ENCODER_ADDRESS 0x34
 //#define Z_ENCODER_RESET_ADDRESS 0x4C
-// #define Z_DAC_LSB_ADDRESS 0x16
-// #define Z_DAC_MSB_ADDRESS 0x1A
+ #define Z_DAC_LSB_ADDRESS 0x16
+ #define Z_DAC_MSB_ADDRESS 0x1A
 
 typedef enum {
 	encoderFB = 0x30,
@@ -153,5 +153,7 @@ uint16_t readIO(void);
 * If a DAC doesn't need changing pass 0xFF for axis instead.
 */
 void setDacs(uint16_t xVoltage, uint16_t yVoltage, uint16_t zVoltage, uint16_t sVoltage);
+
+uint16_t readEncoderCounter(encoder_t counter);
 
 #endif /* CIM_CENTRE_IO_H_ */
