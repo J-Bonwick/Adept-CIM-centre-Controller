@@ -51,6 +51,11 @@ int main (void)
 	
 	//Initialize io pins on the bus
 	io_init();
+	
+	//Set axis positions to the current pos so that the rollover logic doesn't trigger a roll over
+	fb_pos = readEncoderCounter(encoderFB);
+	lr_pos = readEncoderCounter(encoderLR);
+	ud_pos = readEncoderCounter(encoderUD);
 
 	while(1){
 		//Read quadrature encoders
