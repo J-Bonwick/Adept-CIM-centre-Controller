@@ -122,20 +122,10 @@ void writeRaw(uint8_t address, uint8_t data);
 uint8_t readRaw(uint8_t address);
 
 /* Returns a 16 bit value from the encoder counter at the given address*/
-uint16_t readEncoder(encoder_t);
+uint16_t readEncoder(encoder_t counter);
 
 /* Reset the encoder counter at the given address to 0 */
 void resetEncoder(encoderReset_t);
-
-/* Set the dac to the provided speed */
-void setDac(dac_t, uint16_t speed);
-
-void loadDacs(void);
-
-
-
-
-
 
 /* Reads the 12 buttons on the front panel,
 * each bit represents a button where 0 is pressed.
@@ -153,7 +143,5 @@ uint16_t readIO(void);
 * If a DAC doesn't need changing pass 0xFF for axis instead.
 */
 void setDacs(uint16_t xVoltage, uint16_t yVoltage, uint16_t zVoltage, uint16_t sVoltage);
-
-uint16_t readEncoderCounter(encoder_t counter);
 
 #endif /* CIM_CENTRE_IO_H_ */

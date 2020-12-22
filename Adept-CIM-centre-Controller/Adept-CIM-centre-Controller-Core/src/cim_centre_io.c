@@ -55,11 +55,6 @@ void io_init(void) {
 	
 	//Set motor drives to 0
 	setDacs(2048, 2048, 2048, 2048);
-	//setDac(dacFB, 2048);
-	//setDac(dacLR, 2048);
-	//setDac(dacUD, 2048);
-	//setDac(dacSpindle, 2048);
-	//loadDacs();
 }
 
 void writeRaw(uint8_t address, uint8_t data) {
@@ -110,33 +105,11 @@ uint8_t readRaw(uint8_t address) {
 	return data;
 }
 
-//uint16_t readEncoder(encoder_t encoder) {
-	////Read MSB
-	//uint16_t data = readRaw(encoder) << 7;
-	////Read LSB
-	//data |= readRaw(encoder + 1) >> 1;
-	//return data;
-//}
-
 void resetEncoder(encoderReset_t encoder) {
 	readRaw(encoder);
 }
 
-void setDac(dac_t dac, uint16_t speed){
-	//Set LSB
-	writeRaw(dac, speed);
-	//Set MSB
-	writeRaw(dac + 4, speed >> 8);
-}
-
-void loadDacs(void){
-	readRaw(LOAD_DAC_ADDRESS);
-}
-
-
-
-
-uint16_t readEncoderCounter(encoder_t counter) {
+uint16_t readEncoder(encoder_t counter) {
 	//Clear the address
 	ioport_set_port_level(IOPORT_PIOC, ADDRESS_BUS_MASK, 0);
 	//Set the address
@@ -179,6 +152,6 @@ void setDacs(uint16_t xVoltage, uint16_t yVoltage, uint16_t zVoltage, uint16_t s
 	writeRaw(Z_DAC_LSB_ADDRESS, zVoltage);
 	writeRaw(Z_DAC_MSB_ADDRESS, zVoltage >> 8);
 	
-	readRaw(0x26);
+	readRaw(LOAD_DAC_ADDRESS);
 	
 }

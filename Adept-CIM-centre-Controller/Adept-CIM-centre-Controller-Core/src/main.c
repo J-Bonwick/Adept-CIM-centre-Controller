@@ -48,15 +48,15 @@ int main (void)
 	io_init();
 	
 	//Set axis positions to the current pos so that the rollover logic doesn't trigger a roll over
-	long int fb_pos = readEncoderCounter(encoderFB);
-	long int lr_pos = readEncoderCounter(encoderLR);
-	long int ud_pos = readEncoderCounter(encoderUD);
+	long int fb_pos = readEncoder(encoderFB);
+	long int lr_pos = readEncoder(encoderLR);
+	long int ud_pos = readEncoder(encoderUD);
 
 	while(1){
 		//Read quadrature encoders
-		updateEncoder(&fb_pos, readEncoderCounter(encoderFB));
-		updateEncoder(&lr_pos, readEncoderCounter(encoderLR));
-		updateEncoder(&ud_pos, readEncoderCounter(encoderUD));
+		updateEncoder(&fb_pos, readEncoder(encoderFB));
+		updateEncoder(&lr_pos, readEncoder(encoderLR));
+		updateEncoder(&ud_pos, readEncoder(encoderUD));
 		
 		
 		setDacs(2070, 2048, 2048, 2048);
@@ -69,7 +69,7 @@ int main (void)
 		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "UD: %ld\r\n", ud_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
-		uint8_t temp = readEncoderCounter(encoderSpindle);
+		uint8_t temp = readEncoder(encoderSpindle);
 		sprintf(consoleBuffer, "S: %d\r\n", temp);
 		usart_write_line(CONF_UART, consoleBuffer);
 	}
