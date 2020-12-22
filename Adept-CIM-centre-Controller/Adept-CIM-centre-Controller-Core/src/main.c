@@ -52,11 +52,16 @@ int main (void)
 	long int lr_pos = readEncoder(encoderLR);
 	long int ud_pos = readEncoder(encoderUD);
 	//Set target positions to the current position
-	long int fb_target = fb_pos - 1000;
+	long int fb_target = fb_pos;
 	long int lr_target = lr_pos;
 	long int ud_target = ud_pos;
 	
-	bool homeFB = false;
+	uint16_t frontPanelStatus = readFrontPanel();
+	uint16_t generalIO = readIO();
+	
+	//Set to true if currently homing
+	bool FBhoming = true;
+	bool LRhoming = false;
 
 	while(1){
 		//Read quadrature encoders
@@ -86,8 +91,17 @@ int main (void)
 			
 			setDacs(fb_speed + 2048, 2048,lr_speed + 2048, 2048);
 		}
-		//fb_target +=2;
-		//setDacs(2200, 2048, 2045, 2048);
+		
+		frontPanelStatus = readFrontPanel();
+		generalIO = readIO();
+		
+		//home logic
+		if(FBhoming){
+			if(generalIO & 2){
+				FBhoming = false;
+			}
+			fb_target -= 20;
+		}
 		
 		
 		//Print some useful info to the console
