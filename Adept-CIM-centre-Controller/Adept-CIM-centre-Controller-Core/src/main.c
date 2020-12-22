@@ -59,9 +59,9 @@ int main (void)
 		updateEncoder(&ud_pos, readEncoderCounter(encoderUD));
 		
 		
-		setDacs(2038, 2048, 2048, 2048);
+		setDacs(2070, 2048, 2048, 2048);
 		
-		//Hopefully this prints the correct values
+		//Print some useful info to the console
 		char consoleBuffer[100];
 		sprintf(consoleBuffer, "FB: %ld\r\n", fb_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
@@ -72,18 +72,6 @@ int main (void)
 		uint8_t temp = readEncoderCounter(encoderSpindle);
 		sprintf(consoleBuffer, "S: %d\r\n", temp);
 		usart_write_line(CONF_UART, consoleBuffer);
-		//delay_ms(200);
-		//for (int i = 0; i <= 90000; i++)
-		//{
-			//__asm__ __volatile__ ("nop");
-		//}
-		//usart_putchar(CONF_UART, 'b');
-		//uint32_t dw_status = usart_get_status(CONF_UART);
-		//if (dw_status & US_CSR_RXRDY) {
-		//uint32_t received_byte;
-		//usart_read(CONF_UART, &received_byte);
-		//usart_write_line(CONF_UART, received_byte);
-		//}
 	}
 }
 
