@@ -102,8 +102,11 @@ int main (void)
 		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "UD: %ld\r\n", ud_pos);
 		usart_write_line(CONF_UART, consoleBuffer);
-		uint8_t temp = readEncoder(encoderSpindle);
-		sprintf(consoleBuffer, "S: %d\r\n", temp);
+		sprintf(consoleBuffer, "S: %d\r\n", readEncoder(encoderSpindle));
+		usart_write_line(CONF_UART, consoleBuffer);
+		sprintf(consoleBuffer, "FP: %d\r\n", readFrontPanel());
+		usart_write_line(CONF_UART, consoleBuffer);
+		sprintf(consoleBuffer, "P0: %d\r\n", readIO());
 		usart_write_line(CONF_UART, consoleBuffer);
 	}
 }
