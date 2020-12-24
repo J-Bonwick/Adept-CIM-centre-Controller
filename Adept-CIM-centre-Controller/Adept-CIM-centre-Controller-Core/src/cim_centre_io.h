@@ -86,8 +86,8 @@ typedef enum {
 
 typedef enum {
 	encoderResetFB = 0x48,
-	encoderResetLR = 0x44,
-	encoderResetUD= 0x4C,
+	encoderResetLR = 0x4C,
+	encoderResetUD= 0x44,
 	encoderResetSpindle = 0x40
 }encoderReset_t;
 
@@ -158,7 +158,9 @@ typedef enum {
 
 /* Sets up the pins on the bus */
 void io_init(void);
-
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
 void writeRaw(uint8_t address, uint8_t data);
 
 uint8_t readRaw(uint8_t address);
