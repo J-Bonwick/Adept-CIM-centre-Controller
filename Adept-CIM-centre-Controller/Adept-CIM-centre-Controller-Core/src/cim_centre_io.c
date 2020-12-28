@@ -148,8 +148,8 @@ void setDacs(uint16_t xVoltage, uint16_t yVoltage, uint16_t zVoltage, uint16_t s
 	writeRaw(Y_DAC_LSB_ADDRESS, yVoltage);
 	writeRaw(Y_DAC_MSB_ADDRESS, yVoltage >> 8);
 	
-	writeRaw(Z_DAC_LSB_ADDRESS, zVoltage);
-	writeRaw(Z_DAC_MSB_ADDRESS, zVoltage >> 8);
+	writeRaw(LR_DAC_LSB_ADDRESS, zVoltage);
+	writeRaw(LR_DAC_MSB_ADDRESS, zVoltage >> 8);
 	
 	readRaw(LOAD_DAC_ADDRESS);
 	
