@@ -142,8 +142,8 @@ uint16_t readEncoder(encoder_t counter) {
 void setDacs(uint16_t xVoltage, uint16_t yVoltage, uint16_t zVoltage, uint16_t sVoltage){
 	writeRaw(SPINDLE_DAC_LSB_ADDRESS, sVoltage);
 	writeRaw(SPINDLE_DAC_MSB_ADDRESS, sVoltage >> 8);
-	writeRaw(X_DAC_LSB_ADDRESS, xVoltage);
-	writeRaw(X_DAC_MSB_ADDRESS, xVoltage >> 8);
+	writeRaw(FB_DAC_LSB_ADDRESS, xVoltage);
+	writeRaw(FB_DAC_MSB_ADDRESS, xVoltage >> 8);
 	
 	writeRaw(Y_DAC_LSB_ADDRESS, yVoltage);
 	writeRaw(Y_DAC_MSB_ADDRESS, yVoltage >> 8);
