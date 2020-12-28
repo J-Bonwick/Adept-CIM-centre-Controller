@@ -7,6 +7,17 @@
 
 #include "pid.h"
 
+void pidConfigure(pid_t pid, int *input, int *output, int *target, float Kp, float Ki, float Kd, int minOutput, int maxOutput){
+	pid->input = input;
+	pid->output = output;
+	pid->target = target;
+	pid->Kp = Kp;
+	pid->Ki = Ki;
+	pid->Kd = Kd;
+	pid->minValue = minOutput;
+	pid->maxValue = maxOutput;
+}
+
 void pidCalculate(pid_t pid){
 	int input = *pid->input;
 	int error = *pid->target - input;
