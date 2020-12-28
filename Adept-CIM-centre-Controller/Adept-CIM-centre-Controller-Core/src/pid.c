@@ -7,7 +7,7 @@
 
 #include "pid.h"
 
-void pidConfigure(pid_t pid, int *input, int *output, int *target, float Kp, float Ki, float Kd, int minOutput, int maxOutput){
+void pidConfigure(struct pid_t *pid, int *input, int *output, int *target, float Kp, float Ki, float Kd, int minOutput, int maxOutput){
 	pid->input = input;
 	pid->output = output;
 	pid->target = target;
@@ -18,7 +18,7 @@ void pidConfigure(pid_t pid, int *input, int *output, int *target, float Kp, flo
 	pid->maxValue = maxOutput;
 }
 
-void pidCalculate(pid_t pid){
+void pidCalculate(struct pid_t *pid){
 	int input = *pid->input;
 	int error = *pid->target - input;
 	//Compute the integral

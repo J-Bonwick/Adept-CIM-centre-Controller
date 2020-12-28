@@ -9,7 +9,7 @@
 #ifndef PID_H_
 #define PID_H_
 
-typedef struct pid_t {
+struct pid_t {
 	int *input;
 	int *output;
 	int *target;
@@ -25,8 +25,8 @@ typedef struct pid_t {
 	int lastInput;
 };
 
-//typedef struct pidController *pid_t;
-void pidConfigure(pid_t pid, int *input, int *output, int* target, float Kp, float Ki, float Kd, int minOutput, int maxOutput);
-void pidCalculate(pid_t pid);
+//typedef struct pidController * pid_t;
+void pidConfigure(struct pid_t *pid, int *input, int *output, int *target, float Kp, float Ki, float Kd, int minOutput, int maxOutput);
+void pidCalculate(struct pid_t *pid);
 
 #endif /* PID_H_ */
