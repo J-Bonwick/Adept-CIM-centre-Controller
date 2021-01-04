@@ -55,6 +55,12 @@ void io_init(void) {
 	
 	//Set motor drives to 0
 	setDacs(2042, 2048, 2045, 2048);
+	
+	ioport_set_pin_dir(PFBSTEP, IOPORT_DIR_INPUT);
+	ioport_set_pin_dir(PFBDIR, IOPORT_DIR_INPUT);
+	
+	ioport_set_pin_dir(PLRSTEP, IOPORT_DIR_INPUT);
+	ioport_set_pin_dir(PLRDIR, IOPORT_DIR_INPUT);
 }
 
 void writeRaw(uint8_t address, uint8_t data) {
