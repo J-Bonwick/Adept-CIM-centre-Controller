@@ -16,27 +16,42 @@ void pidConfigure(struct pid_t *pid, int *input, int *output, int *target, float
 	pid->Kd = Kd;
 	pid->minValue = minOutput;
 	pid->maxValue = maxOutput;
+	pid->iTerm = 0;
+	pid->lastInput = 0;
 }
 
 void pidCalculate(struct pid_t *pid){
-	int input = *pid->input;
-	int error = *pid->target - input;
-	//Compute the integral
-	pid->iTerm += pid->Ki * error;
-	//Clamp iterm
-	if(pid->iTerm > pid->maxValue){
-		pid->iTerm = pid->maxValue;
-	}
-	else if(pid->iTerm < pid->minValue){
-		pid->iTerm = pid->minValue;
-	}
+	//int input = *pid->input;
+	//int error = *pid->target - input;
+	////Compute the integral
+	//pid->iTerm += pid->Ki * error;
+	////Clamp iterm
+	//if(pid->iTerm > pid->maxValue){
+		//pid->iTerm = pid->maxValue;
+	//}
+	//else if(pid->iTerm < pid->minValue){
+		//pid->iTerm = pid->minValue;
+	//}
+	//
+	////Compute differential
+	//float dInput = input - pid->lastInput;
+	//
+	////Compute the pid output
+	//float output = pid->Kp * error + error + pid->iTerm - pid->Kd * dInput;
+	////Clamp output
+	//if(output > pid->maxValue){
+		//output = pid->maxValue;
+	//}
+	//else if(output < pid->minValue){
+		//output = pid->minValue;
+	//}
+	//*pid->output = output;
+	//pid->lastInput = input;
 	
-	//Compute differential
-	float dInput = input - pid->lastInput;
 	
-	//Compute the pid output
-	float output = pid->Kp * error + error + pid->iTerm - pid->Kd * dInput;
-	//Clamp output
+	
+	int error = *pid->target - *pid->input;
+	int output = pid->Kp * error;
 	if(output > pid->maxValue){
 		output = pid->maxValue;
 	}
@@ -44,5 +59,4 @@ void pidCalculate(struct pid_t *pid){
 		output = pid->minValue;
 	}
 	*pid->output = output;
-	pid->lastInput = input;
 }
