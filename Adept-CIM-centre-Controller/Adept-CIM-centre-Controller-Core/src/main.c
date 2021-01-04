@@ -36,6 +36,13 @@
 #include "console.h"
 #include "pid.h"
 
+#define AXIS_HOMED 0 // Axis has been homed
+#define AXIS_NEEDS_HOMING 1 //Axis has not been homed yet
+#define AXIS_HOMING_ENDSTOP 2 //When homing towards the end stop
+#define AXIS_HOMING_INDEX 3 //When homing towards encoder index pulse
+
+#define FB_MAX 198000
+
 void updateEncoder(int *pos, uint16_t encoderCounter);
 
 void configure_rtt(void){
@@ -69,119 +76,142 @@ int main (void)
 	uint16_t generalIO = readIO();
 	
 	//Set to true if currently homing
-	bool FBhoming = false;
-	bool LRhoming = false;
+	uint8_t FBhomeStatus = 0;
+	uint8_t LRhomeStatus = 0;
 	
 	//PID structs
 	struct pid_t fb_pid;
 	struct pid_t lr_pid;
 	//Configure the PID structs
-	pidConfigure(&fb_pid, &fb_current, &fb_speed, &fb_target, 1, 0, 0, -2024, 2024);
-	pidConfigure(&lr_pid, &lr_current, &lr_speed, &lr_target, 0.5, 0, 0, -2024, 2024);
-	
-	//resetEncoder(encoderResetFB);
-	//resetEncoder(encoderResetLR);
-	//resetEncoder(encoderResetSpindle);
+	pidConfigure(&fb_pid, &fb_current, &fb_speed, &fb_target, 0.5, 10, 2, -2024, 2024);
+	pidConfigure(&lr_pid, &lr_current, &lr_speed, &lr_target, 0.5, 3, 2, -2024, 2024);
 	
 	configure_rtt();
+	bool hadAlarm = false;
+	int fb_step_state = 0;
+	int lr_step_state = 0;
 
 	while(1){
+		//Check for RTT alarm
+		if((rtt_get_status(RTT) & RTT_SR_ALMS) == RTT_SR_ALMS){
+			hadAlarm = true;
+			//Reset alarm
+			configure_rtt();
+		}
+		
 		//Read quadrature encoders
 		updateEncoder(&fb_current, readEncoder(encoderFB));
 		updateEncoder(&lr_current, readEncoder(encoderLR));
 		updateEncoder(&ud_curent, readEncoder(encoderUD));
 		
 		//Calculate PID if alarm has occurred in the RTT
-		if((rtt_get_status(RTT) & RTT_SR_ALMS) == RTT_SR_ALMS){
-			//Get out put values for setting the DACs
+		if(hadAlarm){
+			//limit FB
+			if(fb_target > FB_MAX){
+				fb_target = FB_MAX;
+			}
+			//Get output values for setting the DACs
 			pidCalculate(&fb_pid);
 			pidCalculate(&lr_pid);
 			
 			//Add 2047 to center the values around 2048 as zero speed
-			setDacs(fb_speed + 2047, lr_speed + 2047, 2048, 2048);
-			
-			//long int lr_error = lr_pos - lr_target;
-			//int lr_speed = lr_error * 0.5;
-			//if(lr_speed > 2047){
-				//lr_speed = 2047;
-			//}
-			//else if(lr_speed < -2047){
-				//lr_speed = -2047;
-			//}
-			//
-			//long int fb_error = fb_pos - fb_target;
-			//int fb_speed = fb_error * 1;
-			//if(fb_speed > 2047){
-				//fb_speed = 2047;
-			//}
-			//else if(fb_speed < -2047){
-				//fb_speed = -2047;
-			//}
-			
-			//setDacs(fb_speed + 2048, 2048,lr_speed + 2048, 2048);
-			//Reset the timer counter
-			//configure_rtt();
+			setDacs(-fb_speed + 2048, 2047,-lr_speed + 2048, 2048);
 		}
 		
 		frontPanelStatus = readFrontPanel();
 		generalIO = readIO();
 		
 		
-		////home logic
-		//if(FBhoming){
-			//if(generalIO & FB_ENDSTOP){
-				//FBhoming = false;
-				////resetEncoder(encoderResetFB);
-			//}
-			//fb_target -= 40;
-		//}
-		//if(LRhoming){
-			//if(generalIO & LR_ENDSTOP){
-				//LRhoming = false;
-				////resetEncoder(encoderResetLR);
-			//}
-			//lr_target += 40;
-		//}
-		//
-		//if(frontPanelStatus & FP_HOME){
-			//if(frontPanelStatus & FP_Z_PLUS){
-				//LRhoming = true;
-			//}
-			//if(frontPanelStatus & FP_X_PLUS){
-				//FBhoming = true;
-			//}
-		//}
-		
 		//if(frontPanelStatus & FP_X_PLUS){
-			//setDacs(4095, 2048, 2045, 2048);
+			//setDacs(4095, 2048, 2048, 2048);
 		//}
 		//else if(frontPanelStatus & FP_X_MINUS){
-			//setDacs(0, 2048, 2045, 2048);
+			//setDacs(0, 2048, 2048, 2048);
 		//}
 		//else if(frontPanelStatus & FP_Z_MINUS){
-			//setDacs(2042, 2048, 4095, 2048);
+			//setDacs(2048, 2048, 4095, 2048);
 		//}
 		//else if(frontPanelStatus & FP_Z_PLUS){
-			//setDacs(2042, 2048, 0, 2048);
+			//setDacs(2048, 2048, 0, 2048);
 		//}
 		//else {
-			//setDacs(2042, 2048, 2045, 2048);
+			//setDacs(2048, 2048, 2048, 2048);
 		//}
-		if(frontPanelStatus & FP_Z_PLUS){
-			lr_target += 40;
+		
+		//Check for homing
+		if(frontPanelStatus & FP_HOME){
+			if(frontPanelStatus & (FP_X_MINUS | FP_X_PLUS)){
+				FBhomeStatus = AXIS_HOMING_ENDSTOP;
+			}
+			else if(frontPanelStatus & (FP_Z_MINUS | FP_Z_PLUS)){
+				LRhomeStatus = AXIS_HOMING_ENDSTOP;
+			}
 		}
-		if(frontPanelStatus & FP_Z_MINUS){
-			lr_target -= 40;
-		}
-		if(frontPanelStatus & FP_X_PLUS){
-			fb_target += 40;
-		}
-		if(frontPanelStatus & FP_X_MINUS){
-			fb_target -= 40;
+		//Check for movement buttons every 5ms
+		else if(hadAlarm){
+			if(frontPanelStatus & FP_Z_PLUS){
+				lr_target += 200;
+			}
+			if(frontPanelStatus & FP_Z_MINUS){
+				lr_target -= 200;
+			}
+			if(frontPanelStatus & FP_X_PLUS){
+				fb_target -= 200;
+				if(fb_target < 0){
+					fb_target = 0;
+				}
+			}
+			if(frontPanelStatus & FP_X_MINUS){
+				fb_target += 200;
+			}
 		}
 		
+		//Homing logic
+		if(FBhomeStatus == AXIS_HOMING_ENDSTOP){
+			if(generalIO & FB_ENDSTOP){
+				FBhomeStatus = AXIS_HOMING_INDEX;
+			}
+			else if(hadAlarm){
+				fb_target -= 80;
+			}
+		}
+		else if(FBhomeStatus == AXIS_HOMING_INDEX){
+			//Check if index has occurred while not in endstop region
+			if((generalIO & FB_INDEX) && !(generalIO & FB_ENDSTOP)){
+				FBhomeStatus = AXIS_HOMED;
+				resetEncoder(encoderResetFB);
+				fb_current = 0;
+				fb_target = 0;
+				updateEncoder(&fb_current, readEncoder(encoderFB));
+			}
+			else if(hadAlarm){
+				fb_target += 1;
+			}
+		}
 		
-		if((rtt_get_status(RTT) & RTT_SR_ALMS) == RTT_SR_ALMS){
+		if(LRhomeStatus == AXIS_HOMING_ENDSTOP){
+			if(generalIO & LR_ENDSTOP){
+				LRhomeStatus = AXIS_HOMING_INDEX;
+			}
+			else if(hadAlarm){
+				lr_target += 80;
+			}
+		}
+		else if(LRhomeStatus == AXIS_HOMING_INDEX){
+			//Check if index has occurred while not in endstop region
+			if((generalIO & LR_INDEX) && !(generalIO & LR_ENDSTOP)){
+				LRhomeStatus = AXIS_HOMED;
+				resetEncoder(encoderResetLR);
+				lr_current = 0;
+				lr_target = 0;
+				updateEncoder(&lr_current, readEncoder(encoderLR));
+			}
+			else if(hadAlarm){
+				lr_target -= 1;
+			}
+		}
+		
+		if(hadAlarm){
 		//Print some useful info to the console
 		char consoleBuffer[100];
 		//usart_write_line(CONF_UART, consoleBuffer);
@@ -193,16 +223,43 @@ int main (void)
 		usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "LRT: %d\r\n", lr_target);
 		usart_write_line(CONF_UART, consoleBuffer);
-		sprintf(consoleBuffer, "UD: %d\r\n", ud_curent);
-		usart_write_line(CONF_UART, consoleBuffer);
-		sprintf(consoleBuffer, "S: %d\r\n", readEncoder(encoderSpindle));
-		usart_write_line(CONF_UART, consoleBuffer);
-		sprintf(consoleBuffer, "FP: %d\r\n", readFrontPanel());
-		usart_write_line(CONF_UART, consoleBuffer);
+		//sprintf(consoleBuffer, "UD: %d\r\n", ud_curent);
+		//usart_write_line(CONF_UART, consoleBuffer);
+		//sprintf(consoleBuffer, "S: %d\r\n", readEncoder(encoderSpindle));
+		//usart_write_line(CONF_UART, consoleBuffer);
+		//sprintf(consoleBuffer, "FP: %d\r\n", readFrontPanel());
+		//usart_write_line(CONF_UART, consoleBuffer);
 		sprintf(consoleBuffer, "P0: %d\r\n", readIO());
 		usart_write_line(CONF_UART, consoleBuffer);
-		configure_rtt();
 		}
+		
+		if(hadAlarm){
+			hadAlarm = false;
+		}
+		
+		int temp_state = ioport_get_pin_level(PFBSTEP);
+		if((temp_state == 1) && (fb_step_state == 0)){
+			if (ioport_get_pin_level(PFBDIR))
+			{
+				fb_target++;
+			}
+			else{
+				fb_target--;
+			}
+		}
+		fb_step_state = temp_state;
+		
+		temp_state = ioport_get_pin_level(PLRSTEP);
+		if((temp_state == 1) && (lr_step_state == 0)){
+			if (ioport_get_pin_level(PLRDIR))
+			{
+				lr_target++;
+			}
+			else{
+				lr_target--;
+			}
+		}
+		lr_step_state = temp_state;
 	}
 }
 

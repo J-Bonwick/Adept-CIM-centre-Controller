@@ -543,6 +543,12 @@
     <None Include="src\ASF\sam\drivers\rtt\rtt.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\homing.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\homing.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\pid.c">
       <SubType>compile</SubType>
     </Compile>
