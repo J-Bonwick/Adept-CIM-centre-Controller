@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>commands.html</title>
+<meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8"/>
+<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"  />
+<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css"  /><meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'><style> body { box-sizing: border-box; max-width: 740px; width: 100%; margin: 40px auto; padding: 0 10px; } </style><script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script><script src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'></script><script>document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('markdown-body'); document.querySelectorAll('pre[lang] > code').forEach((code) => { code.classList.add(code.parentElement.lang); }); document.querySelectorAll('pre > code').forEach((code) => { hljs.highlightBlock(code); }); });</script>
+</head>
+
+<body>
+
+<h1 id="scp---serial-command-protocol">SCP - Serial Command
+Protocol</h1>
+<p>SCP is the primary way of interfacing with the this CNC controller.
+It is designed to be controlled either by a human for control
+application.</p>
+<p>TODO: Get End stops as bit array Get status lines as bit array Get
+front panel buttons as bit array</p>
+<h2 id="commands-overview">Commands Overview</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Command</th>
+<th style="text-align: left;">Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Help</td>
+<td style="text-align: left;"><code>H</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Info</td>
+<td style="text-align: left;"><code>I</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Axis Position Set</td>
+<td
+style="text-align: left;"><code>APS &lt;AXIS&gt; &lt;POS&gt;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Axis Position Get</td>
+<td style="text-align: left;"><code>APG &lt;AXIS&gt;</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Axis State</td>
+<td style="text-align: left;"><code>AS</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spindle Speed Set</td>
+<td style="text-align: left;"><code>SSS &lt;SPEED&gt;</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spindle Speed Get</td>
+<td style="text-align: left;"><code>SSG</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spindle Position Get</td>
+<td style="text-align: left;"><code>SPG</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spindle Stat</td>
+<td style="text-align: left;"><code>SS</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="command-help">Command <code>help</code>:</h2>
+<p>Prints a list of available commands with a brief description of
+each.</p>
+<p>Command: ‘help’ Args: ‘NONE’</p>
+<h2 id="verion-v">Verion <code>V</code>:</h2>
+<p>Returns the current software version.</p>
+<p>Command: ‘version’ Args: ‘NONE’</p>
+<h2 id="axis-position-set-aps-axis-position">Axis Position Set :
+<code>APS &lt;AXIS&gt; &lt;POSITION&gt;</code>:</h2>
+<p>Sets the specified axis position.</p>
+<h3 id="args">Args:</h3>
+<h4 id="axis"><code>&lt;AXIS&gt;</code></h4>
+<p>Supported axis: - <code>FB</code> : Forward-Backward -
+<code>LR</code> : Left-Right - <code>UD</code> : Up-Down</p>
+<h3 id="example">Example:</h3>
+<p>Set axis FB to 200 <code>AS FB 200</code></p>
+
+</body>
+</html>

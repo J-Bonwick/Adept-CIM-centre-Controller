@@ -6,11 +6,11 @@
  */ 
 
 
-#ifndef HOMING_H_
-#define HOMING_H_
+#ifndef HOME_H_
+#define HOME_H_
 
 
 
 
 
-#endif /* HOMING_H_ */
+#endif /* HOME_H_ */
